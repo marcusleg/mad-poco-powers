@@ -1,14 +1,14 @@
 ---
 name: ship-to-pr
-description: "After a design is approved: write the implementation plan, implement it with subagent-driven development, check it against the PRD, and open a pull request with a concise, complete description. Use when the user says to write the plan and implement it, to ship it, or to open a PR for an approved design or a finished feature branch."
+description: "After a design is approved: write the implementation plan, implement it with subagent-driven development, check it against the PRD, and open a pull request with a concise, complete description. Use when the user says to write the plan and implement it, to ship it, or to open a PR for an approved design or for finished work."
 ---
 
 # Ship to PR
 
 Run everything between an approved design and a pull request the user
-reviews, stopping only for PRD questions and the base-branch
-confirmation. Invoking this skill is the
-user's standing instruction: "write the plan and implement it using
+reviews, stopping only for PRD questions and, when it can't be worked
+out, which branch is the base. Invoking this skill is the user's
+standing instruction: "write the plan and implement it using
 subagent-driven-development, open a PR I can review, keep the description
 concise yet complete."
 
@@ -31,7 +31,9 @@ use the answer below and continue.
   worktree-directory preference. If a worktree isn't possible (the
   sandbox denies it, or the user has said they don't want worktrees),
   create a feature branch in place with `git switch -c <branch>` before
-  any edit. Never implement on the base branch.
+  any edit. If you're already in a linked worktree, using-git-worktrees
+  creates no branch; if that worktree is on the base branch, run
+  `git switch -c <branch>` there. Never implement on the base branch.
 - **Execution method is chosen:** subagent-driven
   (`superpowers:subagent-driven-development`), unless no subagent tool
   is available; then `superpowers:executing-plans`, and say so.
@@ -43,27 +45,36 @@ use the answer below and continue.
 Everything else still stops as the superpowers skills say: failing tests
 before the PR, destructive or security-sensitive actions, and a plan so
 broken that every path forward is a guess. PRD questions (steps 2 and 4)
-are asked when they come up, and so is finishing's "this branch split
-from <base> — is that correct?" when the base branch isn't already known.
+are asked when they come up.
 
 ## Preconditions
 
-One of:
+**Determine the base branch first.** Take it from the plan, the
+conversation or the branch's upstream; if none says, ask once, before any
+work. Pass it on when finishing-a-development-branch asks.
+
+Then one of:
 
 - **Approved spec** (architectural path): a written spec the user
   approved.
 - **Approved in-chat design** (bounded path): a short design the user
   approved in this conversation.
 - **Finished feature branch**: the user has already implemented the work
-  on a branch that isn't the base branch and just wants the PR. Skip to
-  step 4.
+  on a branch that isn't the base branch and just wants the PR. Commit
+  any uncommitted work on it, then skip to step 4.
 - **Finished work on the base branch**: the work is done but sits on the
-  base branch. Move it to a new feature branch, then skip to step 4.
-  Uncommitted changes: `git switch -c <branch>` carries them over; commit
-  them there. Commits ahead of `origin/<base>`: create the branch at HEAD
-  (`git branch <branch>`), then ask before moving the base branch back to
-  `origin/<base>` (`git reset --hard`), since that rewrites the local
-  base branch.
+  base branch (uncommitted, committed but not pushed, or both). Move it
+  to a feature branch, in this order, then skip to step 4:
+  1. `git fetch`, and note whether `<base>` is ahead of `origin/<base>`.
+  2. `git switch -c <branch>`. The new branch starts at HEAD, so it has
+     the local commits, and it carries the uncommitted changes with it.
+  3. Commit the uncommitted changes on the new branch.
+  4. Only if `<base>` was ahead: ask whether to move the local `<base>`
+     back to `origin/<base>`, then, still on the feature branch,
+     `git branch -f <base> origin/<base>`. This doesn't touch the working
+     tree. If the user declines, leave `<base>` as it is.
+
+  Never use `git reset --hard` here.
 
 If none applies, say so and offer `brainstorming-with-docs`. The approval
 gates before this point are not waived.
@@ -78,15 +89,18 @@ Create a task for each step on your path.
 
 **Architectural path (approved spec):**
 
-1. **Plan.** Invoke `superpowers:writing-plans` for the approved spec,
-   telling it the execution method is subagent-driven.
+1. **Worktree, then plan.** Invoke `superpowers:using-git-worktrees` to
+   create a worktree on a new feature branch off the base branch, and
+   work inside it from here on. Then invoke `superpowers:writing-plans`
+   for the approved spec, telling it the execution method is
+   subagent-driven.
 2. **PRD check on the plan.** If `docs/prd/` has a PRD, invoke
    `prd-check` on the plan. Its questions are asked now, before
-   execution starts. Then commit the spec, the plan and any PRD
-   amendment, so the worktree created in step 3 contains them.
+   execution starts. Then commit the plan and any PRD amendment on the
+   feature branch, not on the base branch.
 3. **Implement.** Invoke `superpowers:subagent-driven-development` with
-   the plan (it sets up the worktree and feature branch). Let it run to
-   the end without check-ins.
+   the plan. Its setup finds the worktree from step 1 and uses it. Let it
+   run to the end without check-ins.
    - **Before it deletes its plan workspace** after the final review, copy
      out of its ledger every `Ruling:` line and every parked finding.
      They go in the PR description.
@@ -106,7 +120,7 @@ Create a task for each step on your path.
    decision the approved design didn't cover: it goes in the PR
    description like a ledger ruling.
 
-**Both paths, and a finished feature branch:**
+**All paths, including finished work:**
 
 4. **PRD check on the branch.** If `docs/prd/` has a PRD, invoke
    `prd-check` on the branch diff against the base branch. Ask now the
