@@ -17,7 +17,7 @@ You also have mad-poco-powers, which complements superpowers.
 PRD checks: if the repo has a PRD in docs/prd/*.md (check at the moment it matters, since one can be written mid-session), it is the agreed product intent. Run `mad-poco-powers:prd-check`:
 - after `superpowers:writing-plans` writes a plan, before execution starts;
 - before `superpowers:finishing-a-development-branch` integrates a branch;
-- whenever a change you make (a debugging fix, a review fix, a quick change) adds or changes user-observable behavior.
+- whenever a change you make outside a plan's execution (a debugging fix, a review fix, a quick change) adds or changes user-observable behavior.
 The PRD is living: it grows to describe virtually all user-observable behavior, so behavior decided along the way is added to it.
 It points out contradictions and extensions and asks the user whether to amend the PRD or change the work. While a plan is executing, do not stop to ask: follow the spec, which was already checked against the PRD, record any difference as a ruling, and ask at the check before integration.
 </IMPORTANT>

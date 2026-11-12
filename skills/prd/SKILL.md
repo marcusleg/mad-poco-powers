@@ -220,9 +220,11 @@ Tell the user the sequence in one sentence, then run every step in order.
    standing out of the body into a closing `## Assumptions` section, one
    line each naming the id or section it affects, so the body reads
    clean. Polish adds no claim the user did not make. Count the body with
-   `wc -w` (excluding frontmatter, table of contents and assumptions) and
-   cut to the `word_ceiling`; if it still runs over, say by how much and
-   what fitting would cost, and let the user decide.
+   `wc -w` (excluding frontmatter, table of contents and assumptions).
+   Over the `word_ceiling`, cut only padding and implementation detail.
+   If it still runs over, split behavior into feature PRDs
+   (`docs/prd/<feature>.md`, citing the parent's ids) instead of cutting
+   it, and run `check_ids.py` on all the files together.
 6. **ToC:** rebuild it from the final headings, rerun `check_ids.py`, fix
    every `toc` hit. Make sure no template comment or template-only
    frontmatter key is left.

@@ -17,7 +17,7 @@ A Claude Code plugin that sits next to [obra/superpowers](https://github.com/obr
 The plugin is built on three beliefs. If they turn out wrong, the skills should change.
 
 1. **A precise domain language is crucial.** Humans and agents should use the same words for the same things, in conversation, documents and code. Terms are settled as soon as they're ambiguous, written to `GLOSSARY.md`, and used everywhere after that.
-2. **The PRD describes virtually all user-observable behavior, eventually.** It doesn't have to be complete at the start: it begins with intent, users, scope and non-goals, and every behavior decided later is written into it when it's decided. It stays the single description of what the product does; implementation never goes in it.
+2. **The PRD describes virtually all user-observable behavior, eventually.** It doesn't have to be complete at the start: it begins with intent, users, scope and non-goals, and every behavior decided later is written into it when it's decided. It stays the single description of what the product does. Implementation stays out of it, except the short technical approach a light PRD carries for small projects.
 3. **Feedback on running software beats reading specs, plans or code.** For product and UX decisions, trying the thing gives better feedback than reading about it, so the loop gets to something runnable quickly. Decisions that are expensive to reverse (data model, public APIs, security, data deletion) are still reviewed on paper.
 
 How the skills follow from them:
@@ -52,7 +52,7 @@ flowchart LR
 
 You start with a PRD, then repeat brainstorm → ship to PR → review for each feature. The agent invokes the other skills (`grilling`, `domain-modeling`, `codebase-design`, `prd-check` and the superpowers skills `ship-to-pr` chains) on its own when they're needed.
 
-- Once a PRD exists, specs, plans and branches are checked against it. `prd-check` runs on the spec, the plan and the branch, and on any other change that adds or changes user-observable behavior (a debugging fix, say). Each mismatch becomes a question: amend the PRD or change the work. PRD amendments are committed on the same branch, so they show up in the PR.
+- Once a PRD exists, specs, plans and branches are checked against it. `prd-check` runs on the spec, the plan and the branch, and on any change made outside a plan's execution that adds or changes user-observable behavior (a debugging fix, say). Each mismatch becomes a question: amend the PRD or change the work. PRD amendments are committed on the same branch, so they show up in the PR.
 - `GLOSSARY.md` is the only place domain terms are defined. The PRD's Glossary section links to it and does not define terms itself.
 - ADRs follow Matt Pocock's format: `docs/adr/NNNN-slug.md`, a paragraph is fine.
 
@@ -83,7 +83,7 @@ A plugin can't edit or turn off another plugin's skills, so this plugin's `Sessi
 
 - Use `mad-poco-powers:brainstorming-with-docs` wherever superpowers says `superpowers:brainstorming`, and never run both. The superpowers skill stays installed and is simply not used.
 - Use `ship-to-pr` when you say to write the plan and implement it, or to open a PR.
-- **When the repo has a PRD in `docs/prd/`:** run `prd-check` after `writing-plans`, before `finishing-a-development-branch`, and after any change that adds or changes user-observable behavior. The PRD is looked for when it matters, so a PRD written mid-session counts too.
+- **When the repo has a PRD in `docs/prd/`:** run `prd-check` after `writing-plans`, before `finishing-a-development-branch`, and after any change made outside a plan's execution that adds or changes user-observable behavior. The PRD is looked for when it matters, so a PRD written mid-session counts too.
 
 If Claude picks the wrong skill, name the one you want: "use brainstorming-with-docs".
 

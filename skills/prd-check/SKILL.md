@@ -1,6 +1,6 @@
 ---
 name: prd-check
-description: "Check a design, spec, plan, or code change against the project's PRD in docs/prd/: point out contradictions, extensions beyond the PRD, and term drift, and ask whether the PRD or the work should change. Use whenever work in a repo with docs/prd/ is designed, planned, or about to be integrated, and whenever a change adds or changes user-observable behavior."
+description: "Check a design, spec, plan, or code change against the project's PRD in docs/prd/: point out contradictions, extensions beyond the PRD, and term drift, and ask whether the PRD or the work should change. Use whenever work in a repo with docs/prd/ is designed, planned, or about to be integrated, and whenever a change made outside a plan's execution adds or changes user-observable behavior."
 ---
 
 # PRD Check
@@ -17,8 +17,10 @@ PRD, and this check is how it gets there.
 
 No `docs/prd/` directory: say so in one line and stop. A PRD exists but
 no file covers the area the work touches: treat the work's
-user-observable behavior as extensions, and offer to add it to the
-closest PRD or to start a feature PRD with the `prd` skill.
+user-observable behavior as extensions. Inside `ship-to-pr`, propose
+adding it to the closest PRD now and list "start a feature PRD for <area>"
+under Follow-ups. Run ad hoc or during brainstorming, you may also offer
+to start a feature PRD with the `prd` skill.
 
 ## When it runs
 
@@ -27,7 +29,7 @@ closest PRD or to start a feature PRD with the `prd` skill.
 | During brainstorming | `brainstorming-with-docs`, live as answers land, then formally at spec self-review | the design / spec |
 | After the plan is written | `ship-to-pr`, or you, after `superpowers:writing-plans` | the plan |
 | Before integrating a branch | `ship-to-pr`, or you, before `superpowers:finishing-a-development-branch` | the branch diff |
-| Ad-hoc changes | you, whenever a fix or quick change adds or changes user-observable behavior (a debugging fix, a review fix, a bounded change) | the change |
+| Ad-hoc changes | you, whenever a change made outside a plan's execution adds or changes user-observable behavior (a debugging fix, a review fix, a bounded change) | the change |
 
 ## 1. Find the PRD
 
@@ -79,10 +81,14 @@ Recommend from the evidence:
 - **Contradictions:** recommend the side the user decided most recently.
   A choice made in this session, or in review of running software,
   usually beats an older PRD line.
-- **Gaps:** recommend changing the work.
+- **Gaps:** recommend changing the work, unless the user decided the
+  omission (for example after trying the software); then recommend
+  amending the PRD to withdraw that part.
 
 Keep the questions few: group extensions that belong to the same feature
 into one question, with all of the proposed PRD text in its `preview`.
+If the user answers with "Other" to treat items differently, ask about
+those items one by one.
 
 Fix term drift in the work directly and list it in one line; if the
 glossary is what's wrong, ask (domain-modeling).

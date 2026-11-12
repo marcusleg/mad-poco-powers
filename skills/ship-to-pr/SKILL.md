@@ -40,7 +40,10 @@ use the answer below and continue.
   `git worktree add <path> -b <branch> <base>` (path per
   using-git-worktrees' directory rules), or `git switch -c <branch> <base>`
   in the in-place fallback. Otherwise the PR would carry another
-  branch's commits.
+  branch's commits. Then bring this work's own commits over from the
+  branch you started on (the spec, GLOSSARY.md, ADR and PRD changes
+  brainstorming committed): `git cherry-pick` them onto the new branch,
+  or `git checkout <start-branch> -- <paths>` and commit.
 - **Execution method is chosen:** subagent-driven
   (`superpowers:subagent-driven-development`), unless no subagent tool
   is available; then `superpowers:executing-plans`, and say so.
@@ -205,12 +208,13 @@ Rules:
 
 - **How to try it comes first** for any change with user-observable
   behavior: the user reviews by running the software, not by reading
-  code. Run the steps yourself before writing them down; they must work
-  from a fresh checkout of the branch (setup, seed data, env vars
-  included). Attach screenshots or a recording when a UI changed and you
-  can capture them; otherwise say exactly what to look at. Drop the
-  section only when nothing user-observable changed, and say so in the
-  summary.
+  code. Run the steps yourself in the worktree before writing them down,
+  and list every setup step someone with a fresh checkout of the branch
+  would need (install, seed data, env vars). Add screenshots or a
+  recording for UI changes only where the forge or the repo has a place
+  for them (never commit them into the product tree); otherwise say
+  exactly what to look at. Drop the section only when nothing
+  user-observable changed, and say so in the summary.
 - **Concise:** one screen when possible (roughly 300 words). Each bullet
   is one line. If it's longer, the cause is usually a file list or
   restated spec; cut those, link instead.

@@ -17,7 +17,7 @@ updated: ""
 
 <!-- inputs: What it is, who it is for and what is out; where it will be built and the platform if the sources do not say. -->
 
-<!-- writing: FR ids are global. Domain nouns are used exactly as GLOSSARY.md defines them, and a term that resolves while writing goes into GLOSSARY.md (domain-modeling). Unlike a full PRD, technical decisions expensive to reverse belong here. -->
+<!-- writing: FR ids are global. Domain nouns are used exactly as GLOSSARY.md defines them, and a term that resolves while writing goes into GLOSSARY.md (domain-modeling). Unlike a full PRD, technical decisions expensive to reverse belong here: prd-light is the one PRD that carries a Technical approach. When it is converted to a `prd`, that section moves to ADRs (domain-modeling) or the technical design. -->
 
 <!-- done when: Every FR can be checked, the scope edges are explicit, and a builder could start from this file alone. -->
 

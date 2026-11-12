@@ -95,7 +95,13 @@ at the earliest incomplete stage; do not turn one approval into permission
 to skip the rest of the selected path. Read-only project exploration is
 allowed while those prerequisites remain incomplete. Writing
 `GLOSSARY.md` and ADRs is documentation, not implementation, and is
-allowed during the interview.
+allowed during the interview. A throwaway prototype offered under "Try
+it instead of asking" is a spike inside this session: your partner's yes
+to that offer approves the prototype and nothing else. It lives in a
+scratch directory outside the repo (or a throwaway branch), any
+dependencies are installed only there, it is never committed to the
+work, and it is deleted before the interview resumes. It approves no
+implementation and no design.
 </HARD-GATE>
 
 ## Three Paths
@@ -316,8 +322,9 @@ the whole process.
 - When a question is about how something should look, feel or behave,
   and your partner can't judge it in the abstract (they'd say "I'll know
   it when I see it"), stop grilling that branch. Offer a quick,
-  throwaway prototype they can run (a spike inside this session), then
-  return to the tree with what they decided. The decided behavior goes
+  throwaway prototype they can run (a spike inside this session, built
+  in a scratch directory outside the repo; see the HARD-GATE), then
+  delete it and return to the tree with what they decided. The decided behavior goes
   into the design, and into the PRD via prd-check.
 - Don't do this for decisions that are expensive to reverse (data
   model, public APIs, security, anything that deletes data): those are
@@ -429,7 +436,8 @@ self-review. Only proceed once they approve.
 **Implementation:**
 
 - Ship to PR: invoke the ship-to-pr skill
-- Plan first: invoke the writing-plans skill
+- Plan first: invoke the writing-plans skill, telling it that names in
+  code and user-facing text use the terms `GLOSSARY.md` defines
 - Do NOT invoke any other implementation skill.
 
 ## Visual Companion
