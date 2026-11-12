@@ -1,0 +1,126 @@
+---
+name: ship-to-pr
+description: "After a design is approved: write the implementation plan, implement it with subagent-driven development, check it against the PRD, and open a pull request with a concise, complete description. Use when the user says to write the plan and implement it, to ship it, or to open a PR for an approved design."
+---
+
+# Ship to PR
+
+Run everything between an approved design and a pull request the user
+reviews, without stopping in between. Invoking this skill is the user's
+standing instruction: "write the plan and implement it using
+subagent-driven-development, open a PR I can review, keep the description
+concise yet complete."
+
+**Announce at start:** "I'm using ship-to-pr: plan → subagent-driven
+implementation → PRD check → pull request."
+
+## What the invocation authorizes
+
+- **Plan review is waived.** `superpowers:writing-plans` normally stops
+  for plan review. The user has already said to go ahead: link the plan
+  in one line and continue. The plan is in the PR for review.
+- **Execution method is chosen:** subagent-driven
+  (`superpowers:subagent-driven-development`), unless no subagent tool
+  is available; then `superpowers:executing-plans`, and say so.
+- **Integration is chosen:** push the feature branch and open a PR
+  (option 2 of `superpowers:finishing-a-development-branch`). Never merge,
+  never push to the base branch, never force-push.
+
+Everything else still stops as the superpowers skills say: failing tests
+before the PR, destructive or security-sensitive actions, and a plan so
+broken that every path forward is a guess.
+
+## Preconditions
+
+An approved design must exist: a written, approved spec (architectural
+path), or an approved in-chat design (bounded path). If neither exists,
+say so and offer `brainstorming-with-docs`. The approval gates before
+this point are not waived.
+
+The repo needs a git remote that accepts PRs and a working forge CLI
+(`gh` for GitHub, `glab` for GitLab). Check this first; if it's missing,
+say what's missing before any work starts.
+
+## Steps
+
+Create a task for each step.
+
+1. **Plan.** Architectural path: invoke `superpowers:writing-plans` for
+   the approved spec, telling it the execution method is subagent-driven.
+   Bounded path: no plan document; go to step 3 and implement with TDD in
+   the normal workflow.
+2. **PRD check on the plan.** If `docs/prd/` exists, invoke `prd-check`
+   on the plan. Its questions are asked now, before execution starts.
+3. **Implement.** Invoke `superpowers:subagent-driven-development` with
+   the plan (it sets up the worktree and branch). Let it run to the end
+   without check-ins.
+   - **Before it deletes its plan workspace** after the final review, copy
+     out of its ledger every `Ruling:` line and every parked finding.
+     They go in the PR description.
+4. **PRD check on the branch.** If `docs/prd/` exists, invoke `prd-check`
+   on the branch diff against the base branch. Ask now what execution
+   collected. PRD amendments are committed on this branch.
+5. **Open the PR.** Invoke `superpowers:finishing-a-development-branch`
+   with option 2 already chosen: it verifies the full test suite, pushes,
+   and creates the PR. Write the description below. Commit the spec and
+   plan if they aren't committed yet, so the PR can link them.
+6. **Report** the PR URL and the two or three things the user should look
+   at first. Stop. The worktree stays for review feedback.
+
+## The PR description
+
+The reader is the user, reviewing later, without this conversation.
+Everything they need to decide "merge or push back" goes in; everything
+they can click through to stays a link.
+
+If the repo has a PR template (`.github/pull_request_template.md`,
+`.gitlab/merge_request_templates/`, `docs/pull_request_template.md`),
+fill that template, carrying the content below into its sections.
+Otherwise use this shape, and **drop any section that would be empty**:
+
+```markdown
+<1-3 sentences: what this changes for the user of the product, and why.
+Cite PRD ids (FR-N) where it realizes them.>
+
+## Changes
+- <behavior-level bullet, not a file list>
+- <...>
+
+## Decisions made during implementation
+- <ruling: what was decided — why — cost if wrong>
+
+## Deviations from the spec
+- <what differs from the approved spec, and why>
+
+## PRD, glossary and ADRs
+- <the prd-check record: amendments, open questions added>
+- <GLOSSARY.md terms added or changed; ADRs added>
+
+## Review focus
+- <where a mistake would hurt most; the riskiest file:line or decision>
+
+## Testing
+- <what was run and the result; what is not covered by tests and why>
+
+## Follow-ups
+- <parked findings and open questions, each one line>
+
+Spec: <path> · Plan: <path>
+```
+
+Rules:
+
+- **Concise:** one screen when possible (roughly 300 words). Each bullet
+  is one line. If it's longer, the cause is usually a file list or
+  restated spec; cut those, link instead.
+- **Complete:** every ledger ruling, every deviation from the spec, every
+  PRD amendment and every test gap is in, however small. A reviewer who
+  finds a decision in the code that isn't in the description stops
+  trusting the description.
+- **Honest:** tests that failed, were skipped or don't exist are stated,
+  not implied away.
+- **No process narration** ("I used subagents", "the reviewer found…").
+  The reader wants the result.
+- **Title:** imperative, under 70 characters, saying the change, not the
+  ticket.
+- End with the attribution lines configured for this session, if any.

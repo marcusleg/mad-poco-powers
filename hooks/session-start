@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# SessionStart hook for mad-poco-powers: routes superpowers' brainstorming
+# step to brainstorming-with-docs, and, in repos with a PRD, makes
+# superpowers' workflow check its work against it.
+set -euo pipefail
+
+project_dir="${CLAUDE_PROJECT_DIR:-$PWD}"
+
+context='<IMPORTANT>\nYou also have mad-poco-powers, which complements superpowers.\n\n- Wherever superpowers (including using-superpowers) tells you to use `superpowers:brainstorming`, invoke `mad-poco-powers:brainstorming-with-docs` instead. It is the same process (paths, hard gate, spec), driven by grilling rounds and keeping GLOSSARY.md and ADRs current. Never run both.\n- When the user says to write the plan and implement it, to ship an approved design, or to open a PR for it, use `mad-poco-powers:ship-to-pr`: plan, subagent-driven implementation, PRD check, then a PR with a concise, complete description.\n- When the user wants product requirements written down (a PRD, a product spec, what to build and why), use `mad-poco-powers:prd`. Its output feeds brainstorming-with-docs.\n- When the user wants to be grilled or to stress-test a plan, use `mad-poco-powers:grilling`. It asks closed questions through AskUserQuestion and open ones in chat.\n- `mad-poco-powers:domain-modeling` and `mad-poco-powers:codebase-design` are companions that brainstorming-with-docs and prd invoke; use them directly when the user works on domain terms, ADRs, module interfaces or seams.\n'
+
+if compgen -G "${project_dir}/docs/prd/*.md" > /dev/null; then
+  context+='\nThis repo has a PRD in docs/prd/. It is the agreed product intent and outranks specs and plans. Run `mad-poco-powers:prd-check`:\n- after `superpowers:writing-plans` writes a plan, before execution starts;\n- before `superpowers:finishing-a-development-branch` integrates a branch;\n- whenever any change you make (a debugging fix, a review fix, a quick change) alters user-visible behavior the PRD covers.\nIt points out contradictions and extensions and asks the user whether to amend the PRD or change the work. While a plan is executing, do not stop to ask: the PRD wins, record the ruling, and ask before integration.\n'
+fi
+
+context+='</IMPORTANT>'
+
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$context"

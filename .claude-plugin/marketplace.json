@@ -1,0 +1,16 @@
+{
+  "name": "mad-poco-powers",
+  "description": "Skills that complement obra/superpowers",
+  "owner": {
+    "name": "Marcus Legendre"
+  },
+  "plugins": [
+    {
+      "name": "mad-poco-powers",
+      "description": "Brainstorming with grilling and docs, domain-modeling, codebase-design, and a standalone PRD workflow. Install alongside superpowers.",
+      "version": "0.2.0",
+      "source": "./",
+      "category": "engineering"
+    }
+  ]
+}

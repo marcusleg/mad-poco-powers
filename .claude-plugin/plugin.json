@@ -1,0 +1,21 @@
+{
+  "name": "mad-poco-powers",
+  "description": "Complements obra/superpowers: brainstorming driven by Matt Pocock's grilling with live glossary/ADR docs, his domain-modeling and codebase-design skills, a standalone PRD workflow adapted from the BMad Method, PRD conformance checks, and a plan-to-PR shipping flow.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Marcus Legendre"
+  },
+  "homepage": "https://github.com/marcusleg/mad-poco-powers",
+  "repository": "https://github.com/marcusleg/mad-poco-powers",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "superpowers",
+    "brainstorming",
+    "grilling",
+    "domain-modeling",
+    "codebase-design",
+    "prd",
+    "pull-request"
+  ]
+}
