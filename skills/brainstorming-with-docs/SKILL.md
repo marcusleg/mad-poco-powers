@@ -230,6 +230,7 @@ digraph brainstorming_with_docs {
     "Explore context, invoke grilling + domain-modeling (bounded)" [shape=box];
     "Grill 1-2 rounds" [shape=box];
     "Present short design in chat" [shape=box];
+    "PRD check on the design (if a PRD exists)" [shape=box];
     "Human approves?" [shape=diamond];
     "Investigate; report recommendation" [shape=doublecircle];
     "Implement via normal workflow (no plan doc)" [shape=doublecircle];
@@ -252,7 +253,8 @@ digraph brainstorming_with_docs {
     "Present question + probe (2-3 sentences)" -> "Human approves?";
     "Explore context, invoke grilling + domain-modeling (bounded)" -> "Grill 1-2 rounds";
     "Grill 1-2 rounds" -> "Present short design in chat";
-    "Present short design in chat" -> "Human approves?";
+    "Present short design in chat" -> "PRD check on the design (if a PRD exists)";
+    "PRD check on the design (if a PRD exists)" -> "Human approves?";
     "Human approves?" -> "Investigate; report recommendation" [label="spike: yes"];
     "Human approves?" -> "Implement via normal workflow (no plan doc)" [label="bounded: yes"];
     "Explore context (code, glossary, ADRs, PRD)" -> "Invoke grilling + domain-modeling";

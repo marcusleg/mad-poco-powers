@@ -6,7 +6,8 @@ description: "After a design is approved: write the implementation plan, impleme
 # Ship to PR
 
 Run everything between an approved design and a pull request the user
-reviews, stopping only for PRD questions. Invoking this skill is the
+reviews, stopping only for PRD questions and the base-branch
+confirmation. Invoking this skill is the
 user's standing instruction: "write the plan and implement it using
 subagent-driven-development, open a PR I can review, keep the description
 concise yet complete."
@@ -24,6 +25,13 @@ use the answer below and continue.
   "Please review the plan. Does it capture what you want?" Don't ask it:
   the ship-to-pr invocation is the answer. Link the plan in one line and
   continue. The plan is in the PR for review.
+- **Worktree consent is given.** `superpowers:using-git-worktrees` asks
+  before creating a worktree (directly, or inside subagent-driven
+  development's setup). Don't ask: the answer is yes. Honor a declared
+  worktree-directory preference. If a worktree isn't possible (the
+  sandbox denies it, or the user has said they don't want worktrees),
+  create a feature branch in place with `git switch -c <branch>` before
+  any edit. Never implement on the base branch.
 - **Execution method is chosen:** subagent-driven
   (`superpowers:subagent-driven-development`), unless no subagent tool
   is available; then `superpowers:executing-plans`, and say so.
@@ -35,7 +43,8 @@ use the answer below and continue.
 Everything else still stops as the superpowers skills say: failing tests
 before the PR, destructive or security-sensitive actions, and a plan so
 broken that every path forward is a guess. PRD questions (steps 2 and 4)
-are asked when they come up.
+are asked when they come up, and so is finishing's "this branch split
+from <base> — is that correct?" when the base branch isn't already known.
 
 ## Preconditions
 
@@ -48,6 +57,13 @@ One of:
 - **Finished feature branch**: the user has already implemented the work
   on a branch that isn't the base branch and just wants the PR. Skip to
   step 4.
+- **Finished work on the base branch**: the work is done but sits on the
+  base branch. Move it to a new feature branch, then skip to step 4.
+  Uncommitted changes: `git switch -c <branch>` carries them over; commit
+  them there. Commits ahead of `origin/<base>`: create the branch at HEAD
+  (`git branch <branch>`), then ask before moving the base branch back to
+  `origin/<base>` (`git reset --hard`), since that rewrites the local
+  base branch.
 
 If none applies, say so and offer `brainstorming-with-docs`. The approval
 gates before this point are not waived.
@@ -66,7 +82,8 @@ Create a task for each step on your path.
    telling it the execution method is subagent-driven.
 2. **PRD check on the plan.** If `docs/prd/` has a PRD, invoke
    `prd-check` on the plan. Its questions are asked now, before
-   execution starts.
+   execution starts. Then commit the spec, the plan and any PRD
+   amendment, so the worktree created in step 3 contains them.
 3. **Implement.** Invoke `superpowers:subagent-driven-development` with
    the plan (it sets up the worktree and feature branch). Let it run to
    the end without check-ins.
@@ -102,8 +119,8 @@ Create a task for each step on your path.
 5. **Open the PR.** Invoke `superpowers:finishing-a-development-branch`
    with option 2 already chosen: it verifies the full test suite, pushes
    the feature branch, and creates the PR. Write the description below.
-   Commit the spec and plan if they aren't committed yet, so the PR can
-   link them.
+   If the spec or plan still isn't on the branch (fallback for a missed
+   step 2 commit), commit it there so the PR can link it.
 6. **Report** the PR URL and the two or three things the user should look
    at first. Stop. The worktree stays for review feedback.
 
