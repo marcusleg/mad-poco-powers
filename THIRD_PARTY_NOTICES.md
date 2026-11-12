@@ -5,7 +5,7 @@ is reproduced below.
 
 | Upstream | Version / commit | Used in |
 |---|---|---|
-| [obra/superpowers](https://github.com/obra/superpowers) | 6.4.2 | `skills/brainstorming-with-docs/` (process, `visual-companion.md`, `spec-document-reviewer-prompt.md`, `scripts/` verbatim) |
+| [obra/superpowers](https://github.com/obra/superpowers) | 6.4.2 | `skills/brainstorming-with-docs/` (process adapted; `visual-companion.md` and `scripts/` verbatim; `spec-document-reviewer-prompt.md` adapted); `hooks/session-start` (JSON escaping function adapted) |
 | [mattpocock/skills](https://github.com/mattpocock/skills) | 1.3.2 @ 5863806 | `skills/domain-modeling/`, `skills/codebase-design/` (verbatim); `skills/grilling/` (adapted to AskUserQuestion), used by `brainstorming-with-docs` and `prd` |
 | [bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | @ e435a22 | `skills/prd/` (adapted from `bmad-agent-pm` templates, `bmad-facilitate`, `guidance-planning`, `rubric-planning`); `scripts/check_ids.py` verbatim |
 
@@ -95,3 +95,5 @@ casings and variations (including BMAD, bmad, BMadMethod, BMAD-METHOD, etc.). Th
 these trademarks in this software does not grant any rights to use the trademarks
 for any other purpose. See [TRADEMARK.md](TRADEMARK.md) for detailed guidelines.
 ```
+
+The BMad license above refers to `CONTRIBUTORS.md` and `TRADEMARK.md`; they are not part of this repository. See [CONTRIBUTORS.md](https://github.com/bmad-code-org/BMAD-METHOD/blob/main/CONTRIBUTORS.md) and [TRADEMARK.md](https://github.com/bmad-code-org/BMAD-METHOD/blob/main/TRADEMARK.md) upstream.

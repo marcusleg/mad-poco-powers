@@ -3,7 +3,7 @@ title: ""
 template: prd
 version: 1.1.0-mpp
 description: "Requirements a team builds from, at any altitude."
-not_for: "Deciding whether to build at all; a very simple or hobby project (`prd-light`); a technical design (`brainstorming-with-docs`); a regulated or contracted baseline that needs a formal SRS."
+not_for: "Deciding whether to build at all; a very simple or hobby project (`prd-light`); a technical design (`brainstorming-with-docs`); a regulated or contracted baseline that needs a formal SRS (not provided by this plugin)."
 facilitation_order: [document-purpose, vision, users-and-journeys, glossary, features-and-requirements, rules?, non-goals, mvp-scope, success-metrics, quality-and-constraints?, change-boundary?, ai-behavior-and-evaluation?, experience-and-platform?, stakeholders-risks-and-rollout?, integrations-and-operations?, data-and-compliance?, api-contract-and-versioning?, slos-and-performance-budgets?, consumer-migration?, developer-experience?, hardware-and-deployment?, stories?, decisions?, open-questions]
 word_ceiling: "about 3,000 words for a product or initiative, 2,000 for a single feature or slice, two pages for hobby and solo work"
 status: draft

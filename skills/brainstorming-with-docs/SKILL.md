@@ -1,6 +1,6 @@
 ---
 name: brainstorming-with-docs
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Replaces superpowers:brainstorming: explores intent and design through relentless grilling rounds, and records the domain glossary and ADRs as decisions crystallise."
+description: "Use instead of superpowers:brainstorming when both are installed. You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores intent and design through relentless grilling rounds, and records the domain glossary and ADRs as decisions crystallise."
 ---
 
 # Brainstorming With Docs
@@ -22,12 +22,12 @@ present a design, and get your human partner's approval.
 ## Companion skills
 
 - **grilling** — on the bounded and architectural paths, invoke it with
-  the Skill tool right after classifying. Every question in this skill is
+  the Skill tool after exploring project context, before the first round. Every question in this skill is
   asked by its rules: rounds over the design tree, closed questions
   through AskUserQuestion with your recommendation first, open questions
   in chat.
 - **domain-modeling** — on the bounded and architectural paths, invoke it
-  with the Skill tool right after classifying. Its rules apply for the
+  with the Skill tool together with grilling. Its rules apply for the
   rest of the session: challenge terms against `GLOSSARY.md`, sharpen
   fuzzy language, stress-test with concrete scenarios, cross-reference the
   code, update `GLOSSARY.md` the moment a term resolves, and offer ADRs
@@ -202,8 +202,8 @@ your path and complete them in order.
 1. **Explore project context** — files, docs, recent commits, `GLOSSARY.md`, relevant ADRs
 2. **Invoke grilling and domain-modeling**
 3. **Grill** — one or two rounds on the decisions that matter
-4. **PRD check** — if a PRD exists, run prd-check on the design and settle its questions
-5. **Present short design in chat** — approach, files touched, testing, in glossary terms
+4. **Present short design in chat** — approach, files touched, testing, in glossary terms
+5. **PRD check** — if a PRD exists, run prd-check on the design and settle its questions before asking for approval
 6. **Get approval** — STOP and wait for an explicit yes; presenting the design and starting in the same breath is skipping the gate. Ask with AskUserQuestion: approve and ship to a PR (ship-to-pr), approve and implement here, or change something
 7. **Implement** — via ship-to-pr, or the normal development workflow (TDD applies); no plan document either way
 
@@ -227,7 +227,7 @@ your path and complete them in order.
 digraph brainstorming_with_docs {
     "Classify: spike / bounded / architectural" [shape=diamond];
     "Present question + probe (2-3 sentences)" [shape=box];
-    "Invoke grilling + domain-modeling (bounded)" [shape=box];
+    "Explore context, invoke grilling + domain-modeling (bounded)" [shape=box];
     "Grill 1-2 rounds" [shape=box];
     "Present short design in chat" [shape=box];
     "Human approves?" [shape=diamond];
@@ -247,10 +247,10 @@ digraph brainstorming_with_docs {
     "Invoke ship-to-pr or writing-plans" [shape=doublecircle];
 
     "Classify: spike / bounded / architectural" -> "Present question + probe (2-3 sentences)" [label="spike"];
-    "Classify: spike / bounded / architectural" -> "Invoke grilling + domain-modeling (bounded)" [label="bounded"];
+    "Classify: spike / bounded / architectural" -> "Explore context, invoke grilling + domain-modeling (bounded)" [label="bounded"];
     "Classify: spike / bounded / architectural" -> "Explore context (code, glossary, ADRs, PRD)" [label="architectural"];
     "Present question + probe (2-3 sentences)" -> "Human approves?";
-    "Invoke grilling + domain-modeling (bounded)" -> "Grill 1-2 rounds";
+    "Explore context, invoke grilling + domain-modeling (bounded)" -> "Grill 1-2 rounds";
     "Grill 1-2 rounds" -> "Present short design in chat";
     "Present short design in chat" -> "Human approves?";
     "Human approves?" -> "Investigate; report recommendation" [label="spike: yes"];

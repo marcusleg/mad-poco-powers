@@ -20,8 +20,8 @@ Superpowers still does the actual work after the spec: `writing-plans`, `subagen
 | `domain-modeling` | Challenges and sharpens domain terms, keeps `GLOSSARY.md`, and offers an ADR only for decisions that are hard to reverse, surprising, and the result of a real trade-off. | Matt Pocock, unchanged |
 | `codebase-design` | Shared vocabulary for deep modules: module, interface, depth, seam, adapter, leverage, locality. Includes Deepening and Design It Twice. | Matt Pocock, unchanged |
 | `prd` | Grills you into a PRD (full or light). The template's sections are the branches of the design tree; journeys and requirements are drafted from your answers and put back to you to accept. Ends with reviewer subagents, an id check and a finalize pass. | BMad Method `bmad-agent-pm` templates + `bmad-facilitate` review/finalize, with grilling as the interview |
-| `prd-check` | Compares a design, spec, plan or branch with the PRD. Sorts mismatches into contradictions, extensions, gaps and term drift; asks you per mismatch (picker, proposed PRD text in the preview) whether to amend the PRD, change the work, or record an open question; amends the PRD without reusing ids. While a plan executes it never stops to ask: the PRD wins, and extensions wait for the check before the PR. | new |
-| `ship-to-pr` | For an approved design: `writing-plans` (plan review waived) → PRD check on the plan → `subagent-driven-development` → PRD check on the branch → `finishing-a-development-branch` with "push and create PR" chosen. Never merges. Writes the PR description: summary, behavior-level changes, every ruling made during implementation, spec deviations, PRD/glossary/ADR changes, review focus, testing and gaps, follow-ups; empty sections dropped, about one screen. | new, chains superpowers |
+| `prd-check` | Compares a design, spec, plan or branch with the PRD. Sorts mismatches into contradictions, extensions, gaps and term drift; asks you per mismatch (picker, proposed PRD text in the preview) whether to amend the PRD, change the work, or record an open question; amends the PRD without reusing ids. While a plan executes it never stops to ask: it follows the already-checked spec, records differences, and asks at the check before the PR. | new |
+| `ship-to-pr` | For an approved spec: `writing-plans` (plan review waived) → PRD check on the plan → `subagent-driven-development` → PRD check on the branch → `finishing-a-development-branch` with "push and create PR" chosen. For an approved bounded design: worktree branch → TDD → PRD check → PR. For a finished feature branch: PRD check → PR. Never merges. Writes the PR description: summary, behavior-level changes, every ruling made during implementation, spec deviations, PRD/glossary/ADR changes, review focus, testing and gaps, follow-ups; empty sections dropped, about one screen. | new, chains superpowers |
 
 ## How they fit together
 
@@ -35,7 +35,7 @@ flowchart LR
 
 You start with a PRD, then repeat brainstorm → ship to PR → review for each feature. The agent invokes the other skills (`grilling`, `domain-modeling`, `codebase-design`, `prd-check` and the superpowers skills `ship-to-pr` chains) on its own when they're needed.
 
-- Once a PRD exists, it outranks specs and plans. `prd-check` runs on the spec, the plan and the branch, and on any other change that alters behavior the PRD covers (a debugging fix, say). Each mismatch becomes a question: amend the PRD or change the work. PRD amendments are committed on the same branch, so they show up in the PR.
+- Once a PRD exists, specs, plans and branches are checked against it. `prd-check` runs on the spec, the plan and the branch, and on any other change that alters behavior the PRD covers (a debugging fix, say). Each mismatch becomes a question: amend the PRD or change the work. PRD amendments are committed on the same branch, so they show up in the PR.
 - `GLOSSARY.md` is the only place domain terms are defined. The PRD's Glossary section links to it and does not define terms itself.
 - ADRs follow Matt Pocock's format: `docs/adr/NNNN-slug.md`, a paragraph is fine.
 
@@ -66,7 +66,7 @@ A plugin can't edit or turn off another plugin's skills, so this plugin's `Sessi
 
 - Use `mad-poco-powers:brainstorming-with-docs` wherever superpowers says `superpowers:brainstorming`, and never run both. The superpowers skill stays installed and is simply not used.
 - Use `ship-to-pr` when you say to write the plan and implement it, or to open a PR.
-- **Only in repos with `docs/prd/*.md`:** run `prd-check` after `writing-plans`, before `finishing-a-development-branch`, and after any change that alters behavior the PRD covers.
+- **When the repo has a PRD in `docs/prd/`:** run `prd-check` after `writing-plans`, before `finishing-a-development-branch`, and after any change that alters behavior the PRD covers. The PRD is looked for when it matters, so a PRD written mid-session counts too.
 
 If Claude picks the wrong skill, name the one you want: "use brainstorming-with-docs".
 
@@ -74,7 +74,6 @@ If Claude picks the wrong skill, name the one you want: "use brainstorming-with-
 
 - Matt Pocock's `grill-me` / `grill-with-docs` shortcuts: use `grilling` directly, or `brainstorming-with-docs`, which already combines grilling with domain-modeling.
 - BMad's brain-dump / coaching / fast-path facilitation (replaced by grilling), memlog, party mode, advanced elicitation, HTML views, ticket tree, PO/UX/architecture agents, and its other planning templates.
-- superpowers' visual companion is copied unchanged into `brainstorming-with-docs` (it is offered only when a question is easier to show than to describe).
 
 ## Credits and license
 

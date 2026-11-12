@@ -21,7 +21,7 @@ updated: ""
 
 <!-- done when: Every FR can be checked, the scope edges are explicit, and a builder could start from this file alone. -->
 
-<!-- next: Offer `brainstorming-with-docs` to design the build from this file; it cites the FR ids and hands off to writing-plans. -->
+<!-- next: Offer `brainstorming-with-docs` to design the build from this file; it cites the FR ids and then offers ship-to-pr or writing-plans. -->
 
 # {title}
 

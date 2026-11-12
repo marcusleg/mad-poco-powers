@@ -74,9 +74,11 @@ glossary is what's wrong, ask (domain-modeling).
 
 **While a plan is executing** (`superpowers:subagent-driven-development`
 or `executing-plans`), don't stop to ask: execution runs without pausing.
-Rule that the PRD wins for contradictions and gaps, record each as a
-ledger ruling, and collect extensions and anything you're unsure of for
-the check before integration, where they're asked.
+The spec was already checked against the PRD, and SDD treats the spec as
+the binding authority. Where the spec and the PRD still differ, follow the
+spec, record the difference as a ledger ruling, and collect it, along with
+extensions and anything you're unsure of, for the check before
+integration, where they're asked.
 
 ## 4. Apply
 
@@ -87,17 +89,19 @@ writing rules:
   one-line reason; a new FR takes the next free number.
 - Scope moves update both MVP scope and Non-goals where they apply.
 - New terms go to `GLOSSARY.md` (domain-modeling).
-- Set `updated` in the frontmatter.
-- Run `python3 <prd skill dir>/scripts/check_ids.py <prd>` and fix every
-  hit.
+- Set `updated` in the frontmatter to today's date (`date +%F`).
+- Run `python3 ../prd/scripts/check_ids.py <prd>` (the path is relative
+  to this skill's directory; needs Python 3.11+) and fix every hit.
 - Commit the PRD change together with the work it belongs to, so a
   reviewer sees both in one PR.
 
 A change to the PRD's vision, users or several features at once is not
 an amendment: recommend running the `prd` skill's update instead.
 
-**Changing the work:** update the spec or plan, or hand the code change
-back to the running workflow.
+**Changing the work:** update the spec or plan. For code, hand the change
+back to the caller: during brainstorming the design changes; in
+`ship-to-pr` it's implemented on the branch before the PR (its step 4);
+for an ad-hoc change, make it now and rerun the tests.
 
 ## 5. Report
 

@@ -26,7 +26,8 @@ which `brainstorming-with-docs` produces from the PRD afterwards.
   very simple or hobby project
 - `rubric.md` — the review rubric
 - `scripts/check_ids.py` — finds broken id references and a stale table
-  of contents (`python3 <this skill's dir>/scripts/check_ids.py <prd.md>`)
+  of contents (`python3 <this skill's dir>/scripts/check_ids.py <prd.md>`;
+  needs Python 3.11+)
 
 Paths are relative to this skill's directory.
 
@@ -149,7 +150,9 @@ open: `PRD · 6 of 24 settled · next: Non-goals, MVP scope`.
 - **Ids.** Give stable ids to anything others will cite (UJ-N, FR-N,
   RULE-N, SM-N, OQ-N). Ids are global and never reused. Make each
   requirement testable and each scope edge explicit.
-- **Names, owners and dates** come from the user, never the environment.
+- **Names, owners and dates in the body** come from the user, never the
+  environment. The frontmatter `created` and `updated` dates are today's
+  date (`date +%F`).
 - **Diagrams.** Draw what a section's comment names from what is known;
   use Mermaid wherever a diagram beats prose.
 - **Table of Contents** sits right after the title: a linked entry per
