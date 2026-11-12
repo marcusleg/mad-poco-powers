@@ -18,6 +18,15 @@ persona, no ticket tree.
 A PRD says **what** and **why**. The **how** is the technical design,
 which `brainstorming-with-docs` produces from the PRD afterwards.
 
+**The PRD is living.** Over time it comes to describe virtually all
+user-observable behavior of the product. The first version doesn't have
+to: it holds what is known and decided now (intent, users, scope,
+non-goals and the behavior already settled), and every behavior decided
+later is added when it's decided, through `prd-check` during
+brainstorming, implementation and review. So don't push the user to
+decide behavior they can't judge yet; it gets decided once they can try
+it, and lands in the PRD then.
+
 ## Files
 
 - `templates/prd.md` — full PRD, for anything with real stakes or more
@@ -159,9 +168,11 @@ open: `PRD · 6 of 24 settled · next: Non-goals, MVP scope`.
   `##` section, each with a short phrase of the key terms a reader would
   search for and the ids it covers. A reader or agent that reads only the
   top can judge the document.
-- **Length** fits the stakes and the reader, within `word_ceiling`.
-  Detail the level below should decide goes there (the technical design,
-  or a narrower PRD), not here.
+- **Length** fits the stakes and the reader, within `word_ceiling` per
+  file. Implementation detail goes to the technical design, never here.
+  A PRD that outgrows its ceiling splits into feature PRDs
+  (`docs/prd/<feature>.md`) that cite the parent's ids; behavior moves,
+  it's never cut to fit.
 
 ## 3. Review
 

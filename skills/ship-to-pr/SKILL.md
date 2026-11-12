@@ -34,6 +34,13 @@ use the answer below and continue.
   any edit. If you're already in a linked worktree, using-git-worktrees
   creates no branch; if that worktree is on the base branch, run
   `git switch -c <branch>` there. Never implement on the base branch.
+- **New branches start from the base branch**, not from wherever HEAD
+  is. using-git-worktrees branches from the current HEAD, so if HEAD
+  isn't on `<base>`, create the worktree yourself with
+  `git worktree add <path> -b <branch> <base>` (path per
+  using-git-worktrees' directory rules), or `git switch -c <branch> <base>`
+  in the in-place fallback. Otherwise the PR would carry another
+  branch's commits.
 - **Execution method is chosen:** subagent-driven
   (`superpowers:subagent-driven-development`), unless no subagent tool
   is available; then `superpowers:executing-plans`, and say so.
@@ -89,11 +96,15 @@ Create a task for each step on your path.
 
 **Architectural path (approved spec):**
 
-1. **Worktree, then plan.** Invoke `superpowers:using-git-worktrees` to
+1. **Worktree, then plan.** If the approved spec isn't committed yet,
+   commit it first (brainstorming-with-docs normally has), so the
+   worktree contains it. Then invoke `superpowers:using-git-worktrees` to
    create a worktree on a new feature branch off the base branch, and
    work inside it from here on. Then invoke `superpowers:writing-plans`
    for the approved spec, telling it the execution method is
-   subagent-driven.
+   subagent-driven, and that names in code and user-facing text
+   (types, functions, labels, messages) use the terms `GLOSSARY.md`
+   defines.
 2. **PRD check on the plan.** If `docs/prd/` has a PRD, invoke
    `prd-check` on the plan. Its questions are asked now, before
    execution starts. Then commit the plan and any PRD amendment on the
@@ -116,7 +127,8 @@ Create a task for each step on your path.
 2. **PRD check on the design** already happened during brainstorming;
    nothing to do here.
 3. **Implement** with TDD (`superpowers:test-driven-development`) in that
-   worktree, committing as you go, then run the full test suite. Note any
+   worktree, naming things with the terms `GLOSSARY.md` defines,
+   committing as you go, then run the full test suite. Note any
    decision the approved design didn't cover: it goes in the PR
    description like a ledger ruling.
 
@@ -135,8 +147,9 @@ Create a task for each step on your path.
    the feature branch, and creates the PR. Write the description below.
    If the spec or plan still isn't on the branch (fallback for a missed
    step 2 commit), commit it there so the PR can link it.
-6. **Report** the PR URL and the two or three things the user should look
-   at first. Stop. The worktree stays for review feedback.
+6. **Report** the PR URL, how to try the change (from the description),
+   and the two or three things the user should look at first. Stop. The
+   worktree stays for review feedback.
 
 ## The PR description
 
@@ -152,6 +165,11 @@ Otherwise use this shape, and **drop any section that would be empty**:
 ```markdown
 <1-3 sentences: what this changes for the user of the product, and why.
 Cite PRD ids (FR-N) where it realizes them.>
+
+## How to try it
+- <exact commands, URL or steps, from a checkout of this branch to
+  seeing the change>
+- <what to look for; screenshots or a short recording for UI changes>
 
 ## Changes
 - <behavior-level bullet, not a file list>
@@ -185,6 +203,14 @@ lines at most. For a finished feature branch, drop the line.
 
 Rules:
 
+- **How to try it comes first** for any change with user-observable
+  behavior: the user reviews by running the software, not by reading
+  code. Run the steps yourself before writing them down; they must work
+  from a fresh checkout of the branch (setup, seed data, env vars
+  included). Attach screenshots or a recording when a UI changed and you
+  can capture them; otherwise say exactly what to look at. Drop the
+  section only when nothing user-observable changed, and say so in the
+  summary.
 - **Concise:** one screen when possible (roughly 300 words). Each bullet
   is one line. If it's longer, the cause is usually a file list or
   restated spec; cut those, link instead.

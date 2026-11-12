@@ -1,6 +1,6 @@
 ---
 name: prd-check
-description: "Check a design, spec, plan, or code change against the project's PRD in docs/prd/: point out contradictions, extensions beyond the PRD, and term drift, and ask whether the PRD or the work should change. Use whenever work in a repo with docs/prd/ is designed, planned, or about to be integrated, and whenever a change alters user-visible behavior the PRD covers."
+description: "Check a design, spec, plan, or code change against the project's PRD in docs/prd/: point out contradictions, extensions beyond the PRD, and term drift, and ask whether the PRD or the work should change. Use whenever work in a repo with docs/prd/ is designed, planned, or about to be integrated, and whenever a change adds or changes user-observable behavior."
 ---
 
 # PRD Check
@@ -10,8 +10,15 @@ built, for whom, and what is deliberately out. Work that silently drifts
 from it makes the PRD a lie. This check catches the drift and puts every
 mismatch to the user as a decision: change the PRD, or change the work.
 
-No `docs/prd/` directory, or no PRD that covers the work: say so in one
-line and stop.
+The PRD is living: over time it describes virtually all user-observable
+behavior, and it grows as behavior is decided. So extensions are
+expected. Most new behavior that someone actually decided belongs in the
+PRD, and this check is how it gets there.
+
+No `docs/prd/` directory: say so in one line and stop. A PRD exists but
+no file covers the area the work touches: treat the work's
+user-observable behavior as extensions, and offer to add it to the
+closest PRD or to start a feature PRD with the `prd` skill.
 
 ## When it runs
 
@@ -20,7 +27,7 @@ line and stop.
 | During brainstorming | `brainstorming-with-docs`, live as answers land, then formally at spec self-review | the design / spec |
 | After the plan is written | `ship-to-pr`, or you, after `superpowers:writing-plans` | the plan |
 | Before integrating a branch | `ship-to-pr`, or you, before `superpowers:finishing-a-development-branch` | the branch diff |
-| Ad-hoc changes | you, whenever a fix or quick change alters behavior the PRD covers (a debugging fix, a review fix, a bounded change) | the change |
+| Ad-hoc changes | you, whenever a fix or quick change adds or changes user-observable behavior (a debugging fix, a review fix, a bounded change) | the change |
 
 ## 1. Find the PRD
 
@@ -65,9 +72,17 @@ with ` (Recommended)`:
   the work proceeds as is
 - **Not a mismatch** — when you're unsure it is one
 
-Recommend from the evidence: if the user decided the new behavior in this
-session, amending the PRD is usually right; if the work drifted by
-accident, changing the work is.
+Recommend from the evidence:
+
+- **Extensions:** recommend **Amend the PRD** unless nobody decided the
+  behavior (it slipped in by accident); then recommend changing the work.
+- **Contradictions:** recommend the side the user decided most recently.
+  A choice made in this session, or in review of running software,
+  usually beats an older PRD line.
+- **Gaps:** recommend changing the work.
+
+Keep the questions few: group extensions that belong to the same feature
+into one question, with all of the proposed PRD text in its `preview`.
 
 Fix term drift in the work directly and list it in one line; if the
 glossary is what's wrong, ask (domain-modeling).

@@ -311,6 +311,18 @@ the whole process.
 - Closed questions (known alternatives) go through AskUserQuestion;
   purpose and discovery stay open questions in chat (see grilling).
 
+**Try it instead of asking:**
+
+- When a question is about how something should look, feel or behave,
+  and your partner can't judge it in the abstract (they'd say "I'll know
+  it when I see it"), stop grilling that branch. Offer a quick,
+  throwaway prototype they can run (a spike inside this session), then
+  return to the tree with what they decided. The decided behavior goes
+  into the design, and into the PRD via prd-check.
+- Don't do this for decisions that are expensive to reverse (data
+  model, public APIs, security, anything that deletes data): those are
+  settled on paper.
+
 **Exploring approaches:**
 
 - Put 2-3 approaches to your partner as a single frontier question, with
